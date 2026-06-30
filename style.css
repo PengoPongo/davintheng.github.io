@@ -144,3 +144,21 @@ footer {
     text-align: center;
     padding: 20px;
 }
+/* ── Clickable project card ── */
+.project-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.project-card-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.view-more {
+    color: #2563eb;
+    font-weight: bold;
+    padding: 0 15px 15px !important;
+}

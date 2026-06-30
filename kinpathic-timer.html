@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kin:pathic Visual Timer | Davin Theng</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Page base ── */
+        body { background: #f8fafc; }
+
+        /* ── Nav tweak for project pages ── */
+        header { position: sticky; top: 0; z-index: 100; }
+
+        /* ── Back link ── */
+        .back-bar {
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 8%;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        /* ── Hero ── */
+        .project-hero {
+            background: linear-gradient(140deg, #0f172a 0%, #0e4f6e 60%, #0891b2 100%);
+            color: white;
+            padding: 72px 10% 60px;
+        }
+        .hero-inner {
+            max-width: 860px;
+        }
+        .eyebrow {
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #67e8f9;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .project-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+        .project-hero .subtitle {
+            font-size: 1.1rem;
+            color: #bae6fd;
+            max-width: 640px;
+            line-height: 1.65;
+            margin-bottom: 28px;
+        }
+        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.22);
+            color: #e0f2fe;
+            padding: 5px 13px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        /* ── Stats bar ── */
+        .stats-bar {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 22px 10%;
+            display: flex;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+        .stat { text-align: left; }
+        .stat .num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            display: block;
+        }
+        .stat .label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── Layout ── */
+        .project-body {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 56px 5% 100px;
+        }
+
+        /* ── Section headings ── */
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: #0891b2;
+            margin-bottom: 8px;
+        }
+        .project-body h2 {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 64px 0 14px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .project-body h2:first-child { margin-top: 0; }
+
+        .project-body p {
+            color: #334155;
+            line-height: 1.8;
+            margin-bottom: 14px;
+            font-size: 0.97rem;
+        }
+
+        /* ── Role callout ── */
+        .role-callout {
+            background: linear-gradient(135deg, #ecfeff, #e0f2fe);
+            border-left: 4px solid #0891b2;
+            border-radius: 0 10px 10px 0;
+            padding: 18px 22px;
+            margin: 20px 0 30px;
+        }
+        .role-callout strong { color: #0e4f6e; font-size: 0.95rem; }
+        .role-callout p { margin: 6px 0 0; color: #0e4f6e; font-size: 0.88rem; line-height: 1.55; }
+
+        /* ── Photo ── */
+        .full-photo {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+            margin: 22px 0 8px;
+            display: block;
+        }
+        .caption {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #94a3b8;
+            margin-bottom: 28px;
+            font-style: italic;
+        }
+
+        /* ── Video ── */
+        .video-wrapper {
+            margin: 24px 0 8px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.14);
+            background: #000;
+        }
+        .video-wrapper video {
+            width: 100%;
+            display: block;
+            max-height: 480px;
+        }
+
+        /* ── Code block ── */
+        .code-label {
+            background: #1e293b;
+            color: #94a3b8;
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
+            padding: 8px 18px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .code-label span { color: #67e8f9; }
+        .code-block {
+            background: #0f172a;
+            color: #cbd5e1;
+            border-radius: 0 0 10px 10px;
+            padding: 20px 22px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            margin: 0 0 24px;
+        }
+        .co  { color: #475569; }   /* comment */
+        .kw  { color: #67e8f9; }   /* keyword */
+        .fn  { color: #a5f3fc; }   /* function */
+        .st  { color: #86efac; }   /* string */
+        .nm  { color: #fbbf24; }   /* number */
+        .cm  { color: #f472b6; }   /* constant/class */
+
+        /* ── Feature grid ── */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin: 22px 0;
+        }
+        .feature-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 18px;
+            transition: box-shadow 0.2s;
+        }
+        .feature-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .feature-card .icon { font-size: 1.5rem; margin-bottom: 10px; }
+        .feature-card h3 { font-size: 0.9rem; color: #0f172a; margin-bottom: 6px; font-weight: 700; }
+        .feature-card p  { font-size: 0.82rem; color: #64748b; margin: 0; line-height: 1.55; }
+
+        /* ── Timeline / challenge ── */
+        .timeline {
+            border-left: 3px solid #bae6fd;
+            padding-left: 26px;
+            margin: 22px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+        .tl-item { position: relative; }
+        .tl-dot {
+            position: absolute;
+            left: -34px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            background: #0891b2;
+            border-radius: 50%;
+            border: 3px solid #e0f2fe;
+        }
+        .tl-item h3 { font-size: 0.95rem; color: #0f172a; font-weight: 700; margin-bottom: 6px; }
+        .tl-item p  { font-size: 0.87rem; color: #334155; margin: 0; line-height: 1.65; }
+
+        /* ── Callout box ── */
+        .callout {
+            background: #fefce8;
+            border: 1px solid #fde68a;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 20px 0;
+            font-size: 0.88rem;
+            color: #78350f;
+            line-height: 1.6;
+        }
+        .callout strong { color: #92400e; }
+
+        /* ── BOM table ── */
+        .bom-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin: 18px 0 28px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+        }
+        .bom-table th {
+            background: #0f172a;
+            color: white;
+            padding: 11px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .bom-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+        }
+        .bom-table tr:last-child td { border-bottom: none; }
+        .bom-table tr:nth-child(even) td { background: #f8fafc; }
+
+        /* ── Two-col layout ── */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        @media (max-width: 650px) {
+            .two-col { grid-template-columns: 1fr; }
+            .project-hero h1 { font-size: 1.9rem; }
+            .project-hero { padding: 50px 6% 44px; }
+            .stats-bar { gap: 24px; padding: 18px 6%; }
+            .project-body { padding: 40px 6% 80px; }
+        }
+
+        /* ── Team ── */
+        .team-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            margin: 18px 0;
+        }
+        .team-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px 16px;
+        }
+        .team-card .avatar {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: #0891b2;
+            color: white;
+            font-weight: 800;
+            font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 10px;
+        }
+        .team-card.me .avatar { background: #0f172a; }
+        .team-card h3 { font-size: 0.88rem; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+        .team-card .role-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+        .team-card.me .role-tag { background: #0f172a; color: white; }
+        .team-card p { font-size: 0.8rem; color: #64748b; margin: 0; line-height: 1.5; }
+
+        /* ── Outcome banner ── */
+        .outcome-banner {
+            background: linear-gradient(135deg, #0f172a, #0e4f6e);
+            color: white;
+            border-radius: 14px;
+            padding: 36px 36px;
+            margin-top: 50px;
+        }
+        .outcome-banner h2 { color: white; border-bottom-color: rgba(255,255,255,0.15); margin-top: 0; }
+        .outcome-banner p { color: #bae6fd; }
+        .future-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .future-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: #e0f2fe;
+        }
+        .future-list li::before {
+            content: "→";
+            color: #67e8f9;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <h1>Davin Theng</h1>
+        <ul>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#projects">Projects</a></li>
+            <li><a href="index.html#resume">Resume</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="back-bar">
+    <a class="back-link" href="index.html#projects">← Back to Projects</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="project-hero">
+    <div class="hero-inner">
+        <p class="eyebrow">UMass Lowell · EECE 4991 Capstone · December 2024</p>
+        <h1>Kin:pathic<br>Visual Timer</h1>
+        <p class="subtitle">
+            I led the software development and contributed to the physical chassis design
+            for this accessibility device — a countdown timer that replaces numbers with
+            personalized images to help children with autism understand the passage of time.
+        </p>
+        <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">Pygame</span>
+            <span class="tag">Raspberry Pi</span>
+            <span class="tag">GPIO / PWM</span>
+            <span class="tag">Embedded Systems</span>
+            <span class="tag">CAD / 3D Design</span>
+            <span class="tag">Accessibility</span>
+        </div>
+    </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-bar">
+    <div class="stat"><span class="num">~80 hrs</span><span class="label">Dev time</span></div>
+    <div class="stat"><span class="num">350+</span><span class="label">Lines of code</span></div>
+    <div class="stat"><span class="num">3</span><span class="label">UI screens built</span></div>
+    <div class="stat"><span class="num">8+ hrs</span><span class="label">Battery life</span></div>
+    <div class="stat"><span class="num">Jan 2025</span><span class="label">Delivered to client</span></div>
+</div>
+
+<div class="project-body">
+
+    <!-- ── MY ROLE ── -->
+    <p class="section-label">My Role</p>
+    <h2>What I Built</h2>
+
+    <div class="role-callout">
+        <strong>Lead Programmer & Chassis Co-Designer</strong>
+        <p>
+            I was responsible for the entire software side of this project — every screen, every interaction,
+            every line of Python. I also helped design the physical chassis dimensions and layout
+            that housed the Raspberry Pi, battery system, and speaker assembly.
+        </p>
+    </div>
+
+    <p>
+        This was my senior capstone project at UMass Lowell, built for Kin:pathic — a behavioral
+        therapy company serving children with autism aged 18 months to 18 years. Their ask was
+        simple but technically challenging: replace a traditional countdown timer with something
+        a child could actually understand. Instead of numbers ticking down, a favorite image —
+        a parent's face, a beloved character — slowly reveals itself as time passes.
+    </p>
+    <p>
+        My job was to make that happen in software, running on a Raspberry Pi with a touchscreen,
+        a USB drive full of custom images, and a speaker that fires an alarm at zero. I built
+        everything from scratch using Python and Pygame.
+    </p>
+
+    <!-- ── HARDWARE PHOTO ── -->
+    <p class="section-label">Hardware</p>
+    <h2>Inside the Device</h2>
+    <img class="full-photo" src="images/visual-timer.png" alt="Kin:pathic Visual Timer — interior hardware view">
+    <p class="caption">The completed prototype open — Raspberry Pi 3B+ (left), UPS HAT with dual 18650 cells (right), PAM8302A amp + speaker in the lid, and the ribbon cable running to the touchscreen display.</p>
+
+    <p>
+        The chassis was sourced as a compatible enclosure for the Raspberry Pi touchscreen, then
+        modified to fit our component layout. I helped plan where each part would sit — the Pi and
+        UPS HAT stacked on the base, speaker mounted in the lid, the power switch and USB port
+        punched through the side walls. The ribbon cable from the Pi to the display runs cleanly
+        through the hinge. Every wire is routed intentionally with no loose connections, meeting
+        the client's requirement that the device be fully safe for a classroom environment.
+    </p>
+
+    <!-- ── SOFTWARE DEMO ── -->
+    <p class="section-label">Software</p>
+    <h2>The Interface I Built</h2>
+
+    <div class="video-wrapper">
+        <video controls>
+            <source src="videos/screen-recording.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <p class="caption">Screen recording of the Pygame application running on the Raspberry Pi touchscreen.</p>
+
+    <div class="video-wrapper">
+        <video controls>
+            <source src="videos/timer-demo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <p class="caption">Screen recording of the timer in action.</p>
+
+    <p>
+        The entire UI runs in Pygame at 800×480px — no frame, fullscreen on boot. I designed
+        and coded three separate screens: a Home screen, an Image Selection screen, and the
+        Timer screen. Navigation is fully touch-driven, using Pygame's mouse collision detection
+        on custom-drawn buttons. Each button has a shadow, a fill color, a darker outline, and an
+        icon loaded from a local <code>UI/</code> folder — I built all of that rendering logic myself.
+    </p>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="icon">🏠</div>
+            <h3>Home Screen</h3>
+            <p>Two large touch buttons — Image Selection and Timer Countdown — with icons, shadows, and colored outlines. Entry point for all navigation.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🖼️</div>
+            <h3>Image Selection</h3>
+            <p>Arrows to cycle through images loaded from a USB drive. The selected image previews inside a circular mask with the filename shown below.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">⏱️</div>
+            <h3>Timer Screen</h3>
+            <p>+/− buttons to set duration (5–60 min in 5-min steps). Play, Stop, Reset controls. The image uncovering from behind a cyan wedge as time passes.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">📐</div>
+            <h3>Clock Face</h3>
+            <p>60 spokes drawn with trigonometry — longer marks every 5th spoke, shorter in between — replicating a real clock face without using any images.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔔</div>
+            <h3>Audio Alarm</h3>
+            <p>GPIO pin 18 drives the PAM8302A amp via PWM. When the timer hits zero, alternating 440 Hz / 880 Hz tones play for 5 seconds.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">💾</div>
+            <h3>USB Image Loading</h3>
+            <p>Auto-detects a USB drive named "IMAGES". Falls back to a local folder if no drive is found. Supports .png, .jpg, .jpeg, and .bmp.</p>
+        </div>
+    </div>
+
+    <!-- ── CODE DEEP DIVE ── -->
+    <p class="section-label">Code Deep Dive</p>
+    <h2>How the Timer Animation Works</h2>
+
+    <p>
+        The visual centerpiece of the whole project is the countdown animation — a cyan "pie slice"
+        that shrinks as time passes, uncovering the image beneath it. I wrote this using polar
+        coordinates and Pygame's polygon renderer. Here's the exact function:
+    </p>
+
+    <div class="code-label">Screen_Codev3.py &nbsp;·&nbsp; <span>draw_timer_circle()</span></div>
+    <div class="code-block"><span class="kw">def</span> <span class="fn">draw_timer_circle</span>(screen, center, radius, time_remaining, total_time):
+    full_circle = <span class="nm">360</span>
+    remaining_angle = (time_remaining / total_time) * full_circle  <span class="co"># scale to degrees</span>
+
+    <span class="co"># Build a polygon from the center outward — a "pie slice"</span>
+    points = [center]  <span class="co"># anchor at clock center</span>
+    <span class="kw">for</span> angle <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">0</span>, <span class="fn">int</span>(remaining_angle) + <span class="nm">1</span>):
+        x = center[<span class="nm">0</span>] + radius * math.cos(math.radians(<span class="nm">270</span> - angle))
+        y = center[<span class="nm">1</span>] + radius * math.sin(math.radians(<span class="nm">270</span> - angle))
+        points.append((x, y))
+
+    pygame.draw.polygon(screen, BLUE, points)</div>
+
+    <p>
+        The key insight: I start the sweep from 270° (the 12 o'clock position) and work
+        clockwise. As <code>time_remaining</code> shrinks toward zero, <code>remaining_angle</code> shrinks too,
+        so the polygon gets smaller and more of the image below it becomes visible. The image
+        is drawn first, then the polygon is drawn on top — simple painter's algorithm.
+    </p>
+
+    <h2>Circular Image Masking</h2>
+    <p>
+        Getting images to display inside a circle — not a rectangle — required a custom masking
+        function. Pygame doesn't have a built-in circular clip, so I built one using an RGBA
+        surface and alpha blending:
+    </p>
+
+    <div class="code-label">Screen_Codev3.py &nbsp;·&nbsp; <span>crop_image_to_circle()</span></div>
+    <div class="code-block"><span class="kw">def</span> <span class="fn">crop_image_to_circle</span>(image, radius):
+    <span class="co"># RGBA surface so we get real transparency</span>
+    circle_surface = pygame.Surface((radius * <span class="nm">2</span>, radius * <span class="nm">2</span>), pygame.SRCALPHA)
+
+    <span class="co"># White circle = the "keep" mask</span>
+    pygame.draw.circle(circle_surface, (<span class="nm">255</span>, <span class="nm">255</span>, <span class="nm">255</span>), (radius, radius), radius)
+
+    <span class="co"># Blit the image with BLEND_RGBA_MIN — pixels outside the white</span>
+    <span class="co"># circle get their alpha zeroed out, making them transparent</span>
+    image_rect = image.get_rect(center=(radius, radius))
+    circle_surface.blit(image, image_rect, special_flags=pygame.BLEND_RGBA_MIN)
+
+    <span class="kw">return</span> circle_surface</div>
+
+    <h2>Clock Spokes with Trigonometry</h2>
+    <p>
+        The clock face ticks are drawn programmatically — no image files. I compute 60 spoke
+        positions around the circle using polar math, making every 5th spoke longer to mark
+        the hour positions, matching a real clock face:
+    </p>
+
+    <div class="code-label">Screen_Codev3.py &nbsp;·&nbsp; <span>draw_timer_spokes()</span></div>
+    <div class="code-block"><span class="kw">def</span> <span class="fn">draw_timer_spokes</span>(color):
+    center_x, center_y, radius = <span class="nm">400</span>, <span class="nm">260</span>, <span class="nm">195</span>
+    even_spoke_length = <span class="nm">30</span>   <span class="co"># long mark every 5 spokes</span>
+    odd_spoke_length  = <span class="nm">10</span>   <span class="co"># short marks in between</span>
+
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="nm">60</span>):
+        angle = math.radians(i * <span class="nm">6</span>)  <span class="co"># 360° / 60 = 6° per spoke</span>
+        spoke_length = even_spoke_length <span class="kw">if</span> i % <span class="nm">5</span> == <span class="nm">0</span> <span class="kw">else</span> odd_spoke_length
+
+        start_x = center_x + radius * math.cos(angle)
+        start_y = center_y + radius * math.sin(angle)
+        end_x   = center_x + (radius - spoke_length) * math.cos(angle)
+        end_y   = center_y + (radius - spoke_length) * math.sin(angle)
+
+        pygame.draw.line(screen, color, (start_x, start_y), (end_x, end_y), <span class="nm">3</span>)</div>
+
+    <h2>Audio Alarm via GPIO PWM</h2>
+    <p>
+        When the timer reaches zero, I trigger an audio alarm through GPIO pin 18 using
+        the <code>gpiozero</code> library's <code>PWMOutputDevice</code>. The function alternates between
+        440 Hz (A4) and 880 Hz (A5) tones for 5 seconds, driving the PAM8302A amplifier
+        wired into the speaker in the lid:
+    </p>
+
+    <div class="code-label">Screen_Codev3.py &nbsp;·&nbsp; <span>play_alarm()</span></div>
+    <div class="code-block">speaker = <span class="fn">PWMOutputDevice</span>(pin=<span class="nm">18</span>)
+
+<span class="kw">def</span> <span class="fn">play_alarm</span>(speaker):
+    start_time = time.time()
+    tones = [<span class="nm">440</span>, <span class="nm">880</span>]  <span class="co"># A4 and A5</span>
+    <span class="kw">while</span> time.time() - start_time < <span class="nm">5</span>:  <span class="co"># plays for 5 seconds</span>
+        <span class="kw">for</span> freq <span class="kw">in</span> tones:
+            speaker.frequency = freq
+            speaker.value = <span class="nm">0.5</span>   <span class="co"># 50% duty cycle = half volume</span>
+            <span class="fn">sleep</span>(<span class="nm">0.2</span>)
+        speaker.off()
+        <span class="fn">sleep</span>(<span class="nm">0.1</span>)
+    speaker.off()</div>
+
+    <h2>State Machine & Touch Input</h2>
+    <p>
+        The whole application runs on a three-state machine — <code>HOME</code>, <code>IMAGE_SELECTION</code>,
+        and <code>TIMER</code> — managed in the main Pygame event loop. Every touch event is routed
+        through <code>collidepoint()</code> checks against the active button rects for that state.
+        This keeps the logic clean: each state only listens for the buttons that exist on its screen.
+    </p>
+
+    <div class="code-label">Screen_Codev3.py &nbsp;·&nbsp; <span>main event loop (condensed)</span></div>
+    <div class="code-block">HOME, IMAGE_SELECTION, TIMER = <span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">2</span>
+current_state = HOME
+
+<span class="kw">while</span> <span class="cm">True</span>:
+    <span class="kw">for</span> event <span class="kw">in</span> pygame.event.get():
+        <span class="kw">if</span> event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = event.pos
+
+            <span class="kw">if</span> current_state == HOME:
+                <span class="kw">if</span> image_button.collidepoint(mouse_x, mouse_y):
+                    current_state = IMAGE_SELECTION
+                    <span class="fn">loadImages</span>()     <span class="co"># scan USB drive on entry</span>
+                <span class="kw">elif</span> timer_button.collidepoint(mouse_x, mouse_y):
+                    current_state = TIMER
+
+            <span class="kw">elif</span> current_state == TIMER:
+                <span class="kw">if</span> play_button.collidepoint(mouse_x, mouse_y):
+                    timer_running = <span class="cm">True</span>
+                <span class="kw">elif</span> reset_button.collidepoint(mouse_x, mouse_y):
+                    timer_running = <span class="cm">False</span>
+                    timer_minutes = time_set   <span class="co"># restore user's chosen duration</span>
+                    speaker.off()
+
+    <span class="co"># Render the active screen</span>
+    <span class="kw">if</span> current_state == HOME:        <span class="fn">display_home_screen</span>()
+    <span class="kw">elif</span> current_state == IMAGE_SELECTION: <span class="fn">display_image_selection_screen</span>()
+    <span class="kw">elif</span> current_state == TIMER:     <span class="fn">display_timer_screen</span>()
+
+    pygame.display.update()
+    clock.tick(<span class="nm">60</span>)</div>
+
+    <!-- ── CHASSIS ── -->
+    <p class="section-label">Physical Design</p>
+    <h2>Chassis & Enclosure</h2>
+    <p>
+        Beyond software, I was involved in designing the chassis layout. The enclosure
+        needed to meet strict client requirements: no glass, non-porous exterior, cleanable
+        with disinfectant wipes, no loose wires, and accessible internals with just a screwdriver.
+        I worked through where every component would mount and how wiring would route,
+        with the goal of making the inside as organized as the outside.
+    </p>
+
+    <div class="two-col">
+        <div>
+            <p style="margin-top:0;"><strong>Layout decisions I made:</strong></p>
+            <div class="timeline">
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <h3>Pi + UPS HAT stacking</h3>
+                    <p>The UPS HAT sits directly on top of the GPIO headers, keeping the battery and power management directly under the Pi with minimal wiring.</p>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <h3>Speaker in the lid</h3>
+                    <p>Mounting the speaker in the lid points audio forward toward the child rather than downward. The PAM8302A amp board is wired back to GPIO 18 on the Pi.</p>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <h3>Side-panel power switch</h3>
+                    <p>The rocker switch is accessible to caregivers on the side of the device, out of reach when positioned on a shelf — meeting the classroom safety requirement.</p>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <h3>Cable management</h3>
+                    <p>Ribbon cable for the touchscreen runs through the hinge channel. Power wires are zip-tied and clipped along the chassis walls, keeping everything secure.</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="callout">
+                <strong>Client requirements the chassis had to meet:</strong><br><br>
+                ✓ No glass surfaces<br>
+                ✓ No latex materials<br>
+                ✓ Non-porous, wipe-clean exterior<br>
+                ✓ Accessible internals (screwdriver only)<br>
+                ✓ No loose wires or components<br>
+                ✓ Battery-powered, ≥ 8 hours runtime<br>
+                ✓ Non-toxic exterior materials
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CHALLENGES ── -->
+    <p class="section-label">Problem Solving</p>
+    <h2>Challenges I Worked Through</h2>
+
+    <div class="timeline">
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <h3>The Arduino couldn't handle it — so I switched to Raspberry Pi</h3>
+            <p>
+                We originally planned to use an Arduino Uno with a TFT LCD and SD card.
+                After weeks of trying to optimize it, I hit a hard wall: the Arduino's limited
+                processing power couldn't simultaneously manage graphics rendering and SD card
+                image loading at any acceptable speed. I advocated for switching to a Raspberry Pi,
+                which opened up Python, Pygame, and proper Linux file system access — but it also
+                meant completely rewriting the software from scratch and sourcing a compatible
+                touchscreen.
+            </p>
+        </div>
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <h3>SD card → USB drive for image management</h3>
+            <p>
+                The original plan stored images on an SD card. In practice, caregivers found
+                it awkward to remove, edit, and reinsert — especially with the Pi's own SD card
+                already in use for the OS. I redesigned the image loading logic to look for a
+                USB drive named "IMAGES" mounted under <code>/media/</code>, with a local
+                folder fallback. This made swapping images as simple as plugging in a flash drive.
+            </p>
+        </div>
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <h3>Shutdown safety with newer Raspberry Pi OS</h3>
+            <p>
+                The ATXRaspi shutdown board we used was designed for older Raspberry Pi OS
+                versions that used init scripts. Newer OS versions manage shutdown through systemd,
+                so the expected process was showing as inactive and the safe-shutdown button
+                wasn't working. I traced the issue to the OS version difference and identified
+                that a device tree overlay remapping the GPIO shutdown pin was the correct fix —
+                something that would be implemented in a production revision.
+            </p>
+        </div>
+        <div class="tl-item">
+            <div class="tl-dot"></div>
+            <h3>Drawing a clock face without any image files</h3>
+            <p>
+                I wanted the timer's clock face — the 60 spokes, the circular outline —
+                to be fully programmatic, with no image assets needed. I worked out the
+                trigonometry to place 60 evenly-spaced tick marks around the circle, alternating
+                long and short marks every 5 ticks to mirror a real clock. This also meant
+                the clock renders perfectly at any resolution without needing texture scaling.
+            </p>
+        </div>
+    </div>
+
+    <!-- ── BOM ── -->
+    <p class="section-label">Hardware</p>
+    <h2>Key Components</h2>
+    <table class="bom-table">
+        <thead>
+            <tr><th>Component</th><th>Role in the device</th><th>Unit Cost</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Raspberry Pi 3 Model B</td><td>Main processor — runs Python/Pygame, handles all I/O</td><td>—</td></tr>
+            <tr><td>Raspberry Pi 7" Touchscreen</td><td>800×480 touch display for the UI</td><td>—</td></tr>
+            <tr><td>UPS HAT (18650 battery board)</td><td>Power management — charges, discharges, and protects the cells</td><td>—</td></tr>
+            <tr><td>18650 Li-Ion Cells (×2, 9900mAh)</td><td>Rechargeable battery providing 8+ hrs of runtime</td><td>—</td></tr>
+            <tr><td>PAM8302A Speaker Driver</td><td>Amplifies GPIO PWM audio signal to drive the speaker</td><td>$3.95</td></tr>
+            <tr><td>8Ω 2W Speaker</td><td>Plays the alarm tone when the timer reaches zero</td><td>$3.67</td></tr>
+            <tr><td>Rocker Switch SPST</td><td>Main power on/off for caregivers</td><td>$3.09</td></tr>
+            <tr><td>M3 Hardware (screws, nuts, standoffs)</td><td>Secures all components inside the chassis</td><td>~$22.78</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ── TEAM ── -->
+    <p class="section-label">Team</p>
+    <h2>Who I Worked With</h2>
+    <div class="team-row">
+        <div class="team-card me">
+            <div class="avatar">DT</div>
+            <h3>Davin Theng</h3>
+            <div class="role-tag">⭐ My Role</div>
+            <p>Lead Programmer — entire Pygame UI, timer logic, image display, audio alarm, state machine, USB loading. Co-designed chassis layout.</p>
+        </div>
+        <div class="team-card">
+            <div class="avatar">KA</div>
+            <h3>Kendrys Arias</h3>
+            <div class="role-tag">CpE</div>
+            <p>Raspberry Pi OS setup, system configuration, software integration and testing.</p>
+        </div>
+        <div class="team-card">
+            <div class="avatar">PN</div>
+            <h3>Phat Nguyen</h3>
+            <div class="role-tag">EE</div>
+            <p>Hardware assembly, PCB design and wiring, power system integration.</p>
+        </div>
+        <div class="team-card">
+            <div class="avatar">GP</div>
+            <h3>Gregory Pierre-Jacques</h3>
+            <div class="role-tag">EE</div>
+            <p>3D printing the chassis, component mounting, circuit assembly.</p>
+        </div>
+    </div>
+    <p style="font-size:0.82rem; color:#94a3b8; margin-top:10px;">
+        Mentor: Dr. Senait Haileselassie, EEE Department &nbsp;·&nbsp;
+        Client: Kin:pathic ABA (Amherst & Nashua, NH)
+    </p>
+
+    <!-- ── OUTCOME ── -->
+    <div class="outcome-banner">
+        <p class="section-label" style="color:#67e8f9;">Outcome</p>
+        <h2>Delivered & Working</h2>
+        <p>
+            The device was successfully delivered to Kin:pathic in January 2025.
+            It met every client requirement — child-safe materials, 8+ hour battery,
+            touchscreen interface, and fully customizable images via USB.
+            The timer has been used in classroom settings to help children with autism
+            manage transitions and understand the passage of time in a way that
+            numbers never could.
+        </p>
+        <p>Things I'd explore next given more time:</p>
+        <ul class="future-list">
+            <li>Fix the systemd-based shutdown via device tree overlay so the power button works reliably</li>
+            <li>Add a companion mobile app so caregivers can manage images wirelessly over Wi-Fi</li>
+            <li>Port the UI to a higher-resolution display and add smooth animation tweening</li>
+            <li>Explore a fully custom 3D-printed enclosure designed specifically for the final component layout</li>
+        </ul>
+    </div>
+
+</div>
+
+<footer>
+    <p>© 2026 Davin Theng</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

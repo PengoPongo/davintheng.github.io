@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Player Dice Game | Davin Theng</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Page base ── */
+        body { background: #f8fafc; }
+
+        /* ── Nav tweak for project pages ── */
+        header { position: sticky; top: 0; z-index: 100; }
+
+        /* ── Back link ── */
+        .back-bar {
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 8%;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        /* ── Hero ── */
+        .project-hero {
+            background: linear-gradient(140deg, #0f172a 0%, #1e293b 60%, #334155 100%);
+            color: white;
+            padding: 72px 10% 60px;
+        }
+        .hero-inner { max-width: 860px; }
+        .eyebrow {
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #67e8f9;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .project-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+        .project-hero .subtitle {
+            font-size: 1.1rem;
+            color: #bae6fd;
+            max-width: 640px;
+            line-height: 1.65;
+            margin-bottom: 28px;
+        }
+        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.22);
+            color: #e0f2fe;
+            padding: 5px 13px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        /* ── Stats bar ── */
+        .stats-bar {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 22px 10%;
+            display: flex;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+        .stat { text-align: left; }
+        .stat .num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            display: block;
+        }
+        .stat .label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── Layout ── */
+        .project-body {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 56px 5% 100px;
+        }
+
+        /* ── Section headings ── */
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: #0891b2;
+            margin-bottom: 8px;
+        }
+        .project-body h2 {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 48px 0 14px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .project-body h2:first-child { margin-top: 0; }
+
+        .project-body p {
+            color: #334155;
+            line-height: 1.8;
+            margin-bottom: 14px;
+            font-size: 0.97rem;
+        }
+
+        /* ── Role callout ── */
+        .role-callout {
+            background: linear-gradient(135deg, #f0fdf4, #e8f5e9);
+            border-left: 4px solid #22c55e;
+            border-radius: 0 10px 10px 0;
+            padding: 18px 22px;
+            margin: 20px 0 30px;
+        }
+        .role-callout strong { color: #14532d; font-size: 0.95rem; }
+        .role-callout p { margin: 6px 0 0; color: #14532d; font-size: 0.88rem; line-height: 1.55; }
+
+        /* ── Video ── */
+        .video-wrapper {
+            margin: 24px 0 8px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.14);
+            background: #000;
+        }
+        .video-wrapper video {
+            width: 100%;
+            display: block;
+            max-height: 480px;
+        }
+        .caption {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #94a3b8;
+            margin-bottom: 28px;
+            font-style: italic;
+        }
+
+        /* ── Code block ── */
+        .code-container { margin: 24px 0 36px; }
+        .code-label {
+            background: #1e293b;
+            color: #94a3b8;
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
+            padding: 8px 18px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .code-label span { color: #67e8f9; }
+        .code-block {
+            background: #0f172a;
+            color: #cbd5e1;
+            border-radius: 0 0 10px 10px;
+            padding: 20px 22px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            margin: 0;
+        }
+        .co  { color: #475569; }   /* comment */
+        .kw  { color: #67e8f9; }   /* keyword */
+        .fn  { color: #a5f3fc; }   /* function */
+        .nm  { color: #fbbf24; }   /* number */
+
+        /* ── Technical Breakdown list ── */
+        .tech-list {
+            margin: 18px 0 28px 20px;
+            padding: 0;
+        }
+        .tech-list li {
+            color: #334155;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        .tech-list strong { color: #0f172a; }
+
+        /* ── Feature grid ── */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin: 22px 0;
+        }
+        .feature-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 18px;
+            transition: box-shadow 0.2s;
+        }
+        .feature-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .feature-card .icon { font-size: 1.5rem; margin-bottom: 10px; }
+        .feature-card h3 { font-size: 0.9rem; color: #0f172a; margin-bottom: 6px; font-weight: 700; }
+        .feature-card p  { font-size: 0.82rem; color: #64748b; margin: 0; line-height: 1.55; }
+
+        /* ── Outcome Banner ── */
+        .outcome-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 60px;
+        }
+        .outcome-banner h2 {
+            color: white !important;
+            border-bottom: none !important;
+            margin-top: 0 !important;
+            font-size: 1.8rem !important;
+        }
+        .outcome-banner p { color: #cbd5e1 !important; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <h1>Davin Theng</h1>
+            <ul>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#resume">Resume</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="back-bar">
+        <a href="index.html#projects" class="back-link">
+            ← Back to Projects
+        </a>
+    </div>
+
+    <section class="project-hero">
+        <div class="hero-inner">
+            <p class="eyebrow">Academic Project · Embedded Systems</p>
+            <h1>Two-Player MIPS Assembly Dice Game</h1>
+            <p class="subtitle">
+                A bare-metal hardware implementation utilizing change notification interrupts, 
+                ADC sampling for pseudorandom seeding, and custom MIPS assembly architecture execution.
+            </p>
+            <div class="tag-row">
+                <span class="tag">MIPS Assembly</span>
+                <span class="tag">PIC32MM Curiosity Board</span>
+                <span class="tag">Bare-Metal Programming</span>
+                <span class="tag">Hardware Interrupts</span>
+                <span class="tag">ADC</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <span class="num">PIC32MM</span>
+            <span class="label">Microcontroller</span>
+        </div>
+        <div class="stat">
+            <span class="num">100% Assembly</span>
+            <span class="label">Language Base</span>
+        </div>
+        <div class="stat">
+            <span class="num">Vector 9</span>
+            <span class="label">Interrupt Handling</span>
+        </div>
+    </div>
+
+    <div class="project-body">
+
+        <p class="section-label">Overview</p>
+        <h2>The Challenge & Project Scope</h2>
+        <p>
+            Developed as part of the <strong>EECE.3170: Microprocessors I</strong> curriculum, this project focuses on low-level interaction with a physical microcontroller platform without an operating system layer[cite: 1]. The objective was to engineer an interactive, real-time two-player dice game requiring high timing accuracy, debounced switch signals, and custom multi-peripheral register configurations[cite: 1, 2, 23].
+        </p>
+
+        <div class="role-callout">
+            <strong>My Role</strong>
+            <p>Developer and Designer – Responsible for writing the complete low-level driver initialization routines, structural interrupt vectors, pseudo-random generation logic via ADC sampling registers, hardware layouts, and signal processing loops[cite: 1, 2, 6].</p>
+        </div>
+
+        <p class="section-label">Hardware Integration</p>
+        <h2>Core Peripherals & Logic</h2>
+        <p>
+            The game system seamlessly orchestrates multiple distinct subsystems through direct memory-mapped register manipulation:
+        </p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon">🎮</div>
+                <h3>Dedicated Inputs</h3>
+                <p>Players interact via dedicated tactile buttons (S1 and S2 mapped on Port B configuration registers)[cite: 2, 8].</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚡</div>
+                <h3>Vector Interrupts</h3>
+                <p>Port B utilizes Change Notification flags configured via hardware vector #9 to reliably trigger actions instantaneously[cite: 1, 6].</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔢</div>
+                <h3>7-Segment Display</h3>
+                <p>The resulting pseudorandom roll number is encoded dynamically and routed over Ports A and C outputs[cite: 3, 8].</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🎲</div>
+                <h3>ADC Randomization</h3>
+                <p>An Analog-to-Digital Converter polls floating channel inputs to harvest noise, forming an unpredictable pseudo-random seed pool[cite: 1, 2, 14].</p>
+            </div>
+        </div>
+
+        <p class="section-label">Demonstration</p>
+        <h2>Hardware Assembly in Action</h2>
+        <p>
+            The setup features a breadboard configuration tied directly into the expansion pins of the PIC32MM Curiosity Board[cite: 1]. Notice the instantaneous visual evaluation, stable software-level delay debouncing, and final LED winner evaluation states[cite: 4, 23, 26]:
+        </p>
+        
+        <div class="video-wrapper">
+            <video controls>
+                <source src="videos/Dice.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p class="caption">Real-time hardware deployment showing alternative button inputs and discrete output stages.</p>
+
+        <p class="section-label">Implementation details</p>
+        <h2>Low-Level Driver Configurations</h2>
+        <p>
+            The software design relies completely on direct hardware bit-masking and register manipulation rather than abstract APIs. Below is the primary initialization routine used to secure hardware pinouts and bind vector-mapped ISR labels globally[cite: 6, 8]:
+        </p>
+
+        <div class="code-container">
+            <div class="code-label">📄 DiceGame.asm &nbsp;·&nbsp; <span>MIPS Initialization & Setup</span></div>
+            <pre class="code-block">
+<span class="co">## =========================================================================</span>
+<span class="co">## Interrupt Vector Configuration</span>
+<span class="co">## =========================================================================</span>
+    .<span class="kw">globl</span>  __vector_dispatch_9        <span class="co">## Port B change notification = vector #9</span>
+    .<span class="kw">section</span> .vector_9, code, keep
+    .<span class="kw">align</span> <span class="nm">2</span>
+    .<span class="kw">set</span> nomips16
+    .<span class="kw">ent</span> __vector_dispatch_9
+<span class="fn">__vector_dispatch_9:</span>
+    <span class="kw">j</span>  isrvector9                      <span class="co">## Jump to actual ISR code in text section</span>
+    <span class="kw">nop</span>
+    .<span class="kw">end</span> __vector_dispatch_9
+
+<span class="fn">main:</span>
+    <span class="co">## Configure I/O ports - LEDs and 7-Segment on Port A & C</span>
+    <span class="kw">sw</span>      zero, TRISA                <span class="co">## TRISA = 0  --> all PORTA bits = output</span>
+    <span class="kw">sw</span>      zero, ANSELA               <span class="co">## ANSELA = 0 --> all PORTA bits digital</span>
+    
+    <span class="co">## Configure Port B switches (pins 7 & 13) as digital inputs</span>
+    <span class="kw">li</span>      t0, _PORTB_RB7_MASK
+    <span class="kw">ori</span>     t0, t0, _PORTB_RB13_MASK
+    <span class="kw">sw</span>      t0, TRISB                  
+    
+    <span class="co">## Configure RB2/AN4 for ADC generation seed</span>
+    <span class="kw">li</span>      t0, _PORTB_RB2_MASK
+    <span class="kw">sw</span>      t0, TRISBSET               <span class="co">## Ensure RB2/AN4 is set as input</span>
+    <span class="kw">sw</span>      t0, ANSELB                 <span class="co">## ANSELB pin 2 = analog for ADC sampling</span>
+            </pre>
+        </div>
+
+        <h2>Deep-Dive Into the Subsystems</h2>
+        <p>
+            The program functions across two paradigms: an asymmetric background initialization stack, and an asynchronous, interrupt-driven runtime context[cite: 6, 21, 22].
+        </p>
+
+        <ul class="tech-list">
+            <li>
+                <strong>Multi-Vectored Interrupt Architecture:</strong> To prevent polling constraints from reducing accuracy, the program implements the PIC32 multi-vectored interrupt model by modifying the <code>INTCON</code>, <code>IPC2</code>, and <code>IEC0</code> registers[cite: 17, 18]. The <code>__vector_dispatch_9</code> section explicitly maps Port B Change Notification directly to vector slot 9, letting hardware handle context routing seamlessly[cite: 6].
+            </li>
+            <li>
+                <strong>True Noise Sampling via ADC:</strong> To create an authentic and fair roll of a 6-sided die, register <code>AD1CHS</code> routes input channel 4 (AN4) into a 10-bit Analog-to-Digital Converter[cite: 12, 14]. By tracking an ungrounded, floating analog input pin, the conversion module harvests environmental thermodynamic voltage variants to seed the pseudo-random logic blocks dynamically[cite: 1, 14].
+            </li>
+            <li>
+                <strong>Hardware State Management:</strong> The state of the game is continuously tracked within a static register (<code>s7</code>), mapping states from active player turns to evaluating final metrics[cite: 15, 16]. This prevents button presses out of turn from modifying the display matrix.
+            </li>
+        </ul>
+
+        <div class="code-container">
+            <div class="code-label">📄 DiceGame.asm &nbsp;·&nbsp; <span>Interrupt Vector Handling & Debouncing</span></div>
+            <pre class="code-block">
+<span class="co">## =========================================================================</span>
+<span class="co">## Interrupt Service Routine (ISR) for Port B Input Triggers</span>
+<span class="co">## =========================================================================</span>
+    .<span class="kw">global</span> isrvector9
+    .<span class="kw">ent</span> isrvector9
+<span class="fn">isrvector9:</span>   
+    <span class="kw">lw</span>      t8, CNFB                   <span class="co">## Read the Change Notification Flag register for Port B</span>
+    
+<span class="fn">checkS1:</span>
+    <span class="kw">and</span>     t9, t8, s4
+    <span class="kw">beq</span>     t9, zero, checkS2          <span class="co">## If S1 flag bit is 0, skip checking S1</span>
+    <span class="kw">nop</span>
+    
+    <span class="kw">sw</span>      s4, CNFBCLR                <span class="co">## Clear change notification flag for S1</span>
+    <span class="kw">jal</span>     delay                      <span class="co">## Divert to Software Debounce Sequence</span>
+            </pre>
+        </div>
+
+        <ul class="tech-list">
+            <li>
+                <strong>Asynchronous Edge Detection & Clears:</strong> When a user clicks a button, the change notification module sets a status bit inside the <code>CNFB</code> register[cite: 24, 25]. The ISR isolates this flag using a bitwise <code>and</code> instruction, clears the pending hardware request atomically through memory-mapped clear aliases (<code>CNFBCLR</code>), and jumps to state processing[cite: 25, 26].
+            </li>
+            <li>
+                <strong>Bare-Metal Software Debouncing:</strong> Mechanical tactile buttons exhibit minor physical contact ripples that cause a microchip to register multiple inputs from a single click. To address this, the code implements a discrete <code>delay:</code> subroutine block[cite: 23]. This runs a tight down-counting iterator loop through 25,000 cycles (<code>0x61A8</code>) to allow voltage states to stabilize before accepting subsequent inputs[cite: 23].
+            </li>
+        </ul>
+
+        <div class="outcome-banner">
+            <p class="section-label" style="color:#67e8f9;">Outcome</p>
+            <h2>Stable Hardware Execution</h2>
+            <p>
+                The MIPS assembly application successfully executes entirely within bare-metal memory structures[cite: 1, 6]. By implementing physical change notification stacks alongside a modular debounce delay loop, floating edge triggers were completely mitigated[cite: 1, 23]. The dice values shift uniformly, ensuring fair game evaluation and dedicated on-board LED notifications upon winning states[cite: 1, 4].
+            </p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Davin Theng</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
