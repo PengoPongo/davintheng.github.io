@@ -2,7 +2,7 @@
 
 Welcome to my personal engineering portfolio repository. This website showcases my academic background, technical skills, and key engineering projects spanning embedded systems, software development, and hardware integration.
 
-🔗 **Live Website:** [[https://pengopongo.github.io/](https://pengopongo.github.io/)](https://pengopongo.github.io/davintheng.github.io/)
+🔗 **Live Website:** [[https://pengopongo.github.io/](https://pengopongo.github.io/davintheng.github.io/)]
 
 ---
 
