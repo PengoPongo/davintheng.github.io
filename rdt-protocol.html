@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reliable Data Transfer Protocol Simulator | Davin Theng</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Page base ── */
+        body { background: #f8fafc; }
+
+        /* ── Nav tweak for project pages ── */
+        header { position: sticky; top: 0; z-index: 100; }
+
+        /* ── Back link ── */
+        .back-bar {
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 8%;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        /* ── Hero ── */
+        .project-hero {
+            background: linear-gradient(140deg, #0f172a 0%, #3b0764 60%, #581c87 100%);
+            color: white;
+            padding: 72px 10% 60px;
+        }
+        .hero-inner { max-width: 860px; }
+        .eyebrow {
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #e9d5ff;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .project-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+        .project-hero .subtitle {
+            font-size: 1.1rem;
+            color: #e9d5ff;
+            max-width: 640px;
+            line-height: 1.65;
+            margin-bottom: 28px;
+        }
+        .tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.22);
+            color: #f5f3ff;
+            padding: 5px 13px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+
+        /* ── Stats bar ── */
+        .stats-bar {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 22px 10%;
+            display: flex;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+        .stat { text-align: left; }
+        .stat .num {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            display: block;
+        }
+        .stat .label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── Layout ── */
+        .project-body {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 56px 5% 100px;
+        }
+
+        /* ── Section headings ── */
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: #7c3aed;
+            margin-bottom: 8px;
+        }
+        .project-body h2 {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 48px 0 14px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .project-body h2:first-child { margin-top: 0; }
+
+        .project-body p {
+            color: #334155;
+            line-height: 1.8;
+            margin-bottom: 14px;
+            font-size: 0.97rem;
+        }
+
+        /* ── Role callout ── */
+        .role-callout {
+            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+            border-left: 4px solid #7c3aed;
+            border-radius: 0 10px 10px 0;
+            padding: 18px 22px;
+            margin: 20px 0 30px;
+        }
+        .role-callout strong { color: #4c1d95; font-size: 0.95rem; }
+        .role-callout p { margin: 6px 0 0; color: #4c1d95; font-size: 0.88rem; line-height: 1.55; }
+
+        /* ── Code block ── */
+        .code-container { margin: 24px 0 36px; }
+        .code-label {
+            background: #1e293b;
+            color: #94a3b8;
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
+            padding: 8px 18px;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .code-label span { color: #c084fc; }
+        .code-block {
+            background: #0f172a;
+            color: #cbd5e1;
+            border-radius: 0 0 10px 10px;
+            padding: 20px 22px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            margin: 0;
+        }
+        .co  { color: #475569; }   /* comment */
+        .kw  { color: #c084fc; }   /* keyword */
+        .fn  { color: #e9d5ff; }   /* function */
+        .nm  { color: #fcd34d; }   /* number */
+
+        /* ── Technical Breakdown list ── */
+        .tech-list { margin: 18px 0 28px 20px; padding: 0; }
+        .tech-list li { color: #334155; line-height: 1.7; margin-bottom: 12px; font-size: 0.95rem; }
+        .tech-list strong { color: #0f172a; }
+
+        /* ── Feature grid ── */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 14px;
+            margin: 22px 0;
+        }
+        .feature-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px 18px;
+            transition: box-shadow 0.2s;
+        }
+        .feature-card:hover { box-shadow: 0 4px 166px rgba(0,0,0,0.08); }
+        .feature-card .icon { font-size: 1.5rem; margin-bottom: 10px; }
+        .feature-card h3 { font-size: 0.9rem; color: #0f172a; margin-bottom: 6px; font-weight: 700; }
+        .feature-card p  { font-size: 0.82rem; color: #64748b; margin: 0; line-height: 1.55; }
+
+        /* ── Outcome Banner ── */
+        .outcome-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #2e1065 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-top: 60px;
+        }
+        .outcome-banner h2 {
+            color: white !important;
+            border-bottom: none !important;
+            margin-top: 0 !important;
+            font-size: 1.8rem !important;
+        }
+        .outcome-banner p { color: #cbd5e1 !important; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <h1>Davin Theng</h1>
+            <ul>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#resume">Resume</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="back-bar">
+        <a href="index.html#projects" class="back-link">← Back to Projects</a>
+    </div>
+
+    <section class="project-hero">
+        <div class="hero-inner">
+            <p class="eyebrow">Network Infrastructure & System Design</p>
+            <h1>Custom Reliable Data Transfer (RDT) Protocol Simulator</h1>
+            <p class="subtitle">
+                A Python-based network architecture implementing a custom layer over UDP sockets to simulate sliding window transport guarantees under highly adverse network conditions.
+            </p>
+            <div class="tag-row">
+                <span class="tag">Python Sockets</span>
+                <span class="tag">UDP Transport</span>
+                <span class="tag">Sliding Window Protocols</span>
+                <span class="tag">Finite State Machines (FSM)</span>
+                <span class="tag">Error Injection</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stat">
+            <span class="num">UDP Socket Layer</span>
+            <span class="label">Transport Base</span>
+        </div>
+        <div class="stat">
+            <span class="num">1024 Bytes</span>
+            <span class="label">Packet Size Constraint</span>
+        </div>
+        <div class="stat">
+            <span class="num">20% Simulated</span>
+            <span class="label">Loss / Bit Error Rate</span>
+        </div>
+    </div>
+
+    <div class="project-body">
+
+        <p class="section-label">Overview</p>
+        <h2>The Engineering Challenge</h2>
+        <p>
+            While standard internet protocols like TCP natively guarantee connection-oriented stability, configuring custom transport solutions over raw, connectionless pipelines presents critical synchronization challenges. This project details a custom **Reliable Data Transfer (RDT) Protocol Engine** written in Python that forces raw UDP socket flows to natively manage sequential stream tracking, acknowledgments, timeouts, and bit-error recovery loops.
+        </p>
+
+        <div class="role-callout">
+            <strong>System Capabilities</strong>
+            <p>Designed and deployed a 5-staged architectural matrix tracking progressively complex transport states: from basic connection verification up to dynamic sliding window engines that safely mitigate simulated packet loss drops and payload byte inversions.</p>
+        </div>
+
+        <p class="section-label">System Architecture</p>
+        <h2>Algorithmic Layers & Edge Conditions</h2>
+        <p>
+            The simulator evaluates reliable transfer parameters by introducing configurable network degradation states:
+        </p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon">📦</div>
+                <h3>Strict Structural Serialization</h3>
+                <p>Data streams are broken into distinct 1024-byte packets formatted using systemic Python <code>struct</code> packing frameworks.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔄</div>
+                <h3>Sliding Window Pipelines</h3>
+                <p>Leverages a dynamic window matrix tracking non-blocking transaction sequences across parallel thread limits.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">💥</div>
+                <h3>Intentional Bit Inversion</h3>
+                <p>Simulates real-world signal noise by selectively flipping data frame bits to challenge checksum tracking layers.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📉</div>
+                <h3>Asymmetric Dropped Packets</h3>
+                <p>Features dynamic data-drop paths that purposefully dump 20% of random incoming traffic to validate timeout retransmission handlers.</p>
+            </div>
+        </div>
+
+        <p class="section-label">Code Walkthrough & Logic</p>
+        <h2>Bit Error Generation & Payload Verification</h2>
+        <p>
+            To ensure complete structural verification, the engine relies on logical bitwise XOR computations. This maps tracking values along an integrated header layout to verify accuracy upon arrival:
+        </p>
+
+        <div class="code-container">
+            <div class="code-label">📄 Option_3_Sender.py &nbsp;·&nbsp; <span>Checksum Handling & Noise Injection</span></div>
+            <pre class="code-block">
+<span class="co"># Calculate parity validation frame through continuous XOR mapping</span>
+<span class="kw">def</span> <span class="fn">calculate_checksum</span>(sequenceNumber, data):
+    checksum = sequenceNumber
+    <span class="kw">for</span> byte <span class="kw">in</span> data:
+        checksum ^= byte
+    <span class="kw">return</span> checksum
+
+<span class="co"># Inject random signal degradation by flipping individual bits within the payload</span>
+<span class="kw">def</span> <span class="fn">flip_bit</span>(data):
+    bit_to_flip = random.randint(<span class="nm">0</span>, len(data) * <span class="nm">8</span> - <span class="nm">1</span>)
+    data_bytes = bytearray(data)
+    byte_index = bit_to_flip // <span class="nm">8</span>
+    bit_index = bit_to_flip % <span class="nm">8</span>
+    data_bytes[byte_index] ^= (<span class="nm">1</span> << bit_index)
+    <span class="kw">return</span> bytes(data_bytes)
+            </pre>
+        </div>
+
+        <h2>Deep Dive: Core Simulation Modules</h2>
+        <ul class="tech-list">
+            <li>
+                <strong>Finite State Machine (FSM) Sockets:</strong> The engine encapsulates transmitter behaviors within explicit Finite State Machine blocks (<code>senderFSM</code>). It uses tracking variables to control structural base values, track upcoming sequence numbers, and monitor window limits continuously.
+            </li>
+            <li>
+                <strong>Timeout Retransmission Guardrails:</strong> Sockets are paired with non-blocking timing controls via <code>sock.settimeout()</code>. If a simulated packet loss drops a confirmation signal, the sender catches the exception, recovers gracefully, and immediately schedules a sequential resend of the unacknowledged window frame.
+            </li>
+            <li>
+                <strong>Robust Binary Packet Layout:</strong> Network payload components use a network-byte-order formatting mask (<code>"!III" + str(dataSize) + "s"</code>). This maps the Sequence Number, Window Size, and Checksum directly into a stable 12-byte binary header appended to each data chunk.
+            </li>
+        </ul>
+
+        <div class="code-container">
+            <div class="code-label">📄 Option_5_Sender.py &nbsp;·&nbsp; <span>FSM Receiver & Drop Simulation</span></div>
+            <pre class="code-block">
+<span class="co"># Evaluate packet viability over unreliable incoming channels</span>
+<span class="kw">try</span>:
+    sock.settimeout(<span class="nm">10</span>)
+    packetData, senderAddress = sock.recvfrom(packetSize)
+<span class="kw">except</span> socket.timeout:
+    print(<span class="co">"Timeout occurred. Prompting retransmission loop..."</span>)
+    sendAck((expectedSequenceNumber - <span class="nm">1</span>), senderAddress, sock)
+    <span class="kw">continue</span>
+
+<span class="co"># Emulate an adverse physical channel environment by dropping packets</span>
+<span class="kw">if</span> random.randint(<span class="nm">1</span>, <span class="nm">100</span>) <= lossPercentage:
+    print(<span class="co">"Simulating packet loss: frame dropped intentionally."</span>)
+            </pre>
+        </div>
+
+        <div class="outcome-banner">
+            <p class="section-label" style="color:#e9d5ff;">Project Outcome</p>
+            <h2>Proven Data Integrity</h2>
+            <p>
+                The RDT Simulator safely achieves 100% accurate file rebuilding across heavily degraded network states. By validating transmission sequences against active sliding window boundaries and combining them with custom software-level timers, the application provides a robust showcase of low-level networking foundations.
+            </p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Davin Theng</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
